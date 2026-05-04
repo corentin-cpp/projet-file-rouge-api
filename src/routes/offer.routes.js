@@ -31,7 +31,7 @@ const authorize = require('../middleware/authorize');
  *     responses:
  *       201: { description: Offre créée }
  */
-router.get('/', authenticate, authorize('super_admin', 'agency_admin', 'agent'), ctrl.getAll);
+router.get('/', ctrl.getAll);
 router.post('/', authenticate, authorize('super_admin', 'agency_admin', 'agent'), ctrl.create);
 
 /**
@@ -68,7 +68,7 @@ router.post('/', authenticate, authorize('super_admin', 'agency_admin', 'agent')
  *     responses:
  *       204: { description: Supprimée }
  */
-router.get('/:id', authenticate, authorize('super_admin', 'agency_admin', 'agent'), ctrl.getOne);
+router.get('/:id', ctrl.getOne);
 router.put('/:id', authenticate, authorize('super_admin', 'agency_admin', 'agent'), ctrl.update);
 router.delete('/:id', authenticate, authorize('super_admin', 'agency_admin'), ctrl.remove);
 

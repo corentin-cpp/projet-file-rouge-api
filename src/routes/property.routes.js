@@ -43,7 +43,7 @@ const authorize = require('../middleware/authorize');
  *     responses:
  *       201: { description: Bien créé }
  */
-router.get('/', authenticate, ctrl.getAll);
+router.get('/', ctrl.getAll);
 router.post('/', authenticate, authorize('super_admin', 'agency_admin', 'agent'), ctrl.create);
 
 /**
@@ -80,7 +80,7 @@ router.post('/', authenticate, authorize('super_admin', 'agency_admin', 'agent')
  *     responses:
  *       204: { description: Supprimé }
  */
-router.get('/:id', authenticate, ctrl.getOne);
+router.get('/:id', ctrl.getOne);
 router.put('/:id', authenticate, authorize('super_admin', 'agency_admin', 'agent'), ctrl.update);
 router.delete('/:id', authenticate, authorize('super_admin', 'agency_admin'), ctrl.remove);
 
@@ -108,7 +108,7 @@ router.delete('/:id', authenticate, authorize('super_admin', 'agency_admin'), ct
  *     responses:
  *       201: { description: Image ajoutée }
  */
-router.get('/:id/images', authenticate, ctrl.getImages);
+router.get('/:id/images', ctrl.getImages);
 router.post('/:id/images', authenticate, authorize('super_admin', 'agency_admin', 'agent'), ctrl.addImage);
 
 /**

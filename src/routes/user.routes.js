@@ -23,7 +23,7 @@ const authorize = require('../middleware/authorize');
  *     responses:
  *       200: { description: Liste des utilisateurs }
  */
-router.get('/', authenticate, authorize('super_admin', 'agency_admin'), ctrl.getAll);
+router.get('/', ctrl.getAll);
 
 /**
  * @swagger
@@ -59,7 +59,7 @@ router.get('/', authenticate, authorize('super_admin', 'agency_admin'), ctrl.get
  *     responses:
  *       204: { description: Supprimé }
  */
-router.get('/:id', authenticate, ctrl.getOne);
+router.get('/:id', ctrl.getOne);
 router.put('/:id', authenticate, authorize('super_admin', 'agency_admin'), ctrl.update);
 router.delete('/:id', authenticate, authorize('super_admin', 'agency_admin'), ctrl.remove);
 
