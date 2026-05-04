@@ -1,0 +1,704 @@
+{
+  "info": {
+    "name": "Ymmo API",
+    "description": "Collection Postman pour l'API immobilière Ymmo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api" },
+    { "key": "token", "value": "" },
+    { "key": "refreshToken", "value": "" },
+    { "key": "agencyId", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "propertyId", "value": "" },
+    { "key": "contactId", "value": "" },
+    { "key": "mandateId", "value": "" },
+    { "key": "offerId", "value": "" },
+    { "key": "visitId", "value": "" },
+    { "key": "conversationId", "value": "" },
+    { "key": "tagId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Admin\",\n  \"lastName\": \"Ymmo\",\n  \"email\": \"admin@ymmo.fr\",\n  \"password\": \"Admin1234!\",\n  \"role\": \"super_admin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.accessToken) {",
+                  "  pm.collectionVariables.set('token', res.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', res.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@ymmo.fr\",\n  \"password\": \"Admin1234!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.accessToken) pm.collectionVariables.set('token', res.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/refresh",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/me",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/logout",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Agencies",
+      "item": [
+        {
+          "name": "List Agencies",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/agencies",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Agency",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) pm.collectionVariables.set('agencyId', res.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/agencies",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ymmo Paris\",\n  \"siret\": \"12345678901234\",\n  \"email\": \"contact@ymmo-paris.fr\",\n  \"phone\": \"0140000000\",\n  \"address\": \"10 Rue de la Paix\",\n  \"city\": \"Paris\",\n  \"postalCode\": \"75001\",\n  \"country\": \"FR\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Agency",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/agencies/{{agencyId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Update Agency",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/agencies/{{agencyId}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"0140000001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Agency",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/agencies/{{agencyId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users?agencyId={{agencyId}}",
+              "query": [{ "key": "agencyId", "value": "{{agencyId}}" }]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/{{userId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/users/{{userId}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"0600000001\",\n  \"isActive\": true\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Properties",
+      "item": [
+        {
+          "name": "List Properties",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/properties?city=Paris&transactionType=sale",
+              "query": [
+                { "key": "city", "value": "Paris" },
+                { "key": "transactionType", "value": "sale" }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Property",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) pm.collectionVariables.set('propertyId', res.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/properties",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agencyId\": \"{{agencyId}}\",\n  \"title\": \"Appartement T3 Paris 8e\",\n  \"description\": \"Beau 3 pièces lumineux\",\n  \"type\": \"apartment\",\n  \"transactionType\": \"sale\",\n  \"price\": 450000,\n  \"surfaceArea\": 65.5,\n  \"rooms\": 3,\n  \"bedrooms\": 2,\n  \"bathrooms\": 1,\n  \"floor\": 3,\n  \"totalFloors\": 6,\n  \"constructionYear\": 1990,\n  \"hasParking\": false,\n  \"hasBalcony\": true,\n  \"hasGarden\": false,\n  \"isFurnished\": false,\n  \"address\": \"15 Rue du Faubourg Saint-Honoré\",\n  \"city\": \"Paris\",\n  \"postalCode\": \"75008\",\n  \"latitude\": 48.8714,\n  \"longitude\": 2.3097\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Property",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/properties/{{propertyId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Update Property",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/properties/{{propertyId}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 440000,\n  \"status\": \"under_offer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Add Image",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/properties/{{propertyId}}/images",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://cdn.ymmo.fr/images/property1.jpg\",\n  \"altText\": \"Vue salon\",\n  \"isCover\": true,\n  \"displayOrder\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Add Tag to Property",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/properties/{{propertyId}}/tags",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tagId\": \"{{tagId}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "List Tags",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tags",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Tag",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) pm.collectionVariables.set('tagId', res.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/tags",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Vue mer\",\n  \"color\": \"#0099CC\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "List Contacts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/contacts",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Contact",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) pm.collectionVariables.set('contactId', res.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/contacts",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agencyId\": \"{{agencyId}}\",\n  \"firstName\": \"Jean\",\n  \"lastName\": \"Dupont\",\n  \"email\": \"jean.dupont@example.com\",\n  \"phone\": \"0600000002\",\n  \"contactType\": \"buyer\",\n  \"source\": \"website\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Contact",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/contacts/{{contactId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Update Contact",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/contacts/{{contactId}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Client sérieux, budget 500k€\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mandates",
+      "item": [
+        {
+          "name": "List Mandates",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/mandates",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Mandate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) pm.collectionVariables.set('mandateId', res.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/mandates",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"agencyId\": \"{{agencyId}}\",\n  \"agentId\": \"{{userId}}\",\n  \"mandateType\": \"exclusive\",\n  \"startDate\": \"2026-05-01\",\n  \"endDate\": \"2026-11-01\",\n  \"commissionRate\": 5.0,\n  \"isExclusive\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Add Contact to Mandate",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/mandates/{{mandateId}}/contacts",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactId\": \"{{contactId}}\",\n  \"role\": \"seller\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Offers",
+      "item": [
+        {
+          "name": "List Offers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/offers",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Offer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) pm.collectionVariables.set('offerId', res.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/offers",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"contactId\": \"{{contactId}}\",\n  \"amount\": 435000,\n  \"conditions\": \"Sous réserve de prêt\",\n  \"validityDate\": \"2026-05-15\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Accept Offer",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/offers/{{offerId}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Visits",
+      "item": [
+        {
+          "name": "List Visits",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/visits",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) pm.collectionVariables.set('visitId', res.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/visits",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"contactId\": \"{{contactId}}\",\n  \"scheduledAt\": \"2026-05-10T14:00:00Z\",\n  \"durationMinutes\": 45,\n  \"notes\": \"Premier rendez-vous\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Complete Visit",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/visits/{{visitId}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"completed\",\n  \"feedback\": \"Client très intéressé, propose une offre.\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "List Documents",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/documents?propertyId={{propertyId}}",
+              "query": [{ "key": "propertyId", "value": "{{propertyId}}" }]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Document",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/documents",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"name\": \"Diagnostic énergétique\",\n  \"documentType\": \"diagnostics\",\n  \"fileUrl\": \"https://cdn.ymmo.fr/docs/dpe-123.pdf\",\n  \"mimeType\": \"application/pdf\",\n  \"fileSizeKb\": 320\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Conversations & Messages",
+      "item": [
+        {
+          "name": "List My Conversations",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/conversations",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create Conversation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) pm.collectionVariables.set('conversationId', res.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/conversations",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversationType\": \"internal\",\n  \"title\": \"Discussion dossier Paris 8e\",\n  \"propertyId\": \"{{propertyId}}\",\n  \"userIds\": [\"{{userId}}\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Conversation",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/conversations/{{conversationId}}",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Add User to Conversation",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/conversations/{{conversationId}}/users",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Messages",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/conversations/{{conversationId}}/messages?limit=50",
+              "query": [{ "key": "limit", "value": "50" }]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Send Message (REST)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/conversations/{{conversationId}}/messages",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Bonjour, le client a validé l'offre ce matin.\",\n  \"messageType\": \"text\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
