@@ -9,6 +9,16 @@
             "name": "API YMMO - PROJET FILE ROUGE",
             "database": "ymmo",
             "username": "postgres"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5433,
+            "driver": "PostgreSQL",
+            "name": "YMMO METABASE",
+            "database": "ymmo-metabase",
+            "username": "postgres"
         }
     ]
 }

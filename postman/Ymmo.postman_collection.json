@@ -111,7 +111,7 @@
           "request": {
             "method": "GET",
             "url": "{{baseUrl}}/agencies",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+            "header": []
           }
         },
         {
@@ -146,7 +146,7 @@
           "request": {
             "method": "GET",
             "url": "{{baseUrl}}/agencies/{{agencyId}}",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+            "header": []
           }
         },
         {
@@ -185,7 +185,7 @@
               "raw": "{{baseUrl}}/users?agencyId={{agencyId}}",
               "query": [{ "key": "agencyId", "value": "{{agencyId}}" }]
             },
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+            "header": []
           }
         },
         {
@@ -193,7 +193,7 @@
           "request": {
             "method": "GET",
             "url": "{{baseUrl}}/users/{{userId}}",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+            "header": []
           }
         },
         {
@@ -227,7 +227,7 @@
                 { "key": "transactionType", "value": "sale" }
               ]
             },
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+            "header": []
           }
         },
         {
@@ -262,7 +262,7 @@
           "request": {
             "method": "GET",
             "url": "{{baseUrl}}/properties/{{propertyId}}",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+            "header": []
           }
         },
         {
@@ -478,7 +478,7 @@
           "request": {
             "method": "GET",
             "url": "{{baseUrl}}/offers",
-            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+            "header": []
           }
         },
         {
@@ -506,6 +506,14 @@
               "mode": "raw",
               "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"contactId\": \"{{contactId}}\",\n  \"amount\": 435000,\n  \"conditions\": \"Sous réserve de prêt\",\n  \"validityDate\": \"2026-05-15\"\n}"
             }
+          }
+        },
+        {
+          "name": "Get Offer",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/offers/{{offerId}}",
+            "header": []
           }
         },
         {

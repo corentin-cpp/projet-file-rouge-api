@@ -11,7 +11,7 @@
 [![JWT](https://img.shields.io/badge/Auth-JWT-FB015B?style=flat-square&logo=jsonwebtokens&logoColor=white)](https://jwt.io)
 [![Swagger](https://img.shields.io/badge/Docs-Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black)](https://swagger.io)
 
-*Gestion des biens, mandats, contacts, offres, visites, documents et messagerie en temps réel*
+*Gestion des biens, mandats, contacts, clients, offres, visites, documents et messagerie en temps réel*
 
 </div>
 
@@ -31,6 +31,7 @@
 - [Tests Postman](#-tests-avec-postman)
 - [Structure du projet](#-structure-du-projet)
 - [Base de données](#-base-de-données)
+- [Espace client](#-espace-client)
 
 ---
 
@@ -167,6 +168,8 @@ npm run migrate
 009_create_visits
 010_create_documents
 011_create_messaging
+012_fix_property_status
+013_create_client_profiles
 ```
 
 </details>
@@ -195,12 +198,14 @@ npm run migrate
 
 ### Matrice des rôles
 
-| Rôle | Agences | Utilisateurs | Biens | Contacts | Mandats / Offres / Visites |
+| Rôle | Agences | Biens | Contacts | Mandats / Offres / Visites | Clients |
 |---|:---:|:---:|:---:|:---:|:---:|
 | `super_admin` | ✅ CRUD | ✅ CRUD | ✅ CRUD | ✅ CRUD | ✅ CRUD |
-| `agency_admin` | ✅ Read / Update | ✅ CRUD | ✅ CRUD | ✅ CRUD | ✅ CRUD |
-| `agent` | ✅ Read | ✅ Read | ✅ CRUD | ✅ CRUD | ✅ CRUD |
-| `client` | ✅ Read | — | ✅ Read | — | — |
+| `agency_admin` | ✅ Read/Update | ✅ CRUD | ✅ CRUD | ✅ CRUD | ✅ CRUD |
+| `agent` | ✅ Read | ✅ CRUD | ✅ CRUD | ✅ CRUD | ✅ Create/Read/Update |
+| `client` | — | ✅ Read | — | — | ✅ Update (données financières propres) |
+
+> Les clients ne peuvent pas créer de compte eux-mêmes. Seuls les agents et admins créent des comptes clients.
 
 ---
 
@@ -215,6 +220,7 @@ npm run migrate
 | `POST` | `/api/auth/refresh` | Rafraîchir le token | Public |
 | `POST` | `/api/auth/logout` | Se déconnecter | 🔒 |
 | `GET` | `/api/auth/me` | Profil connecté | 🔒 |
+| `POST` | `/api/auth/change-password` | Changer son mot de passe | 🔒 |
 
 ### 🏢 Agences
 
@@ -239,6 +245,18 @@ npm run migrate
 | `POST` | `/api/properties/:id/images` | Ajouter une image |
 | `POST` | `/api/properties/:id/tags` | Associer un tag |
 | `DELETE` | `/api/properties/:id/tags/:tagId` | Retirer un tag |
+
+### 🧑‍💼 Clients
+
+| Méthode | Route | Description | Rôles |
+|---|---|---|---|
+| `POST` | `/api/clients` | Créer un client (retourne le mot de passe provisoire) | agent, agency_admin, super_admin |
+| `GET` | `/api/clients` | Lister les clients | agent, agency_admin, super_admin |
+| `GET` | `/api/clients/portal` | Tableau de bord du client connecté | **client** |
+| `GET` | `/api/clients/:id` | Détail d'un client | agent, agency_admin, super_admin |
+| `PUT` | `/api/clients/:id` | Modifier (tous champs pour agents, champs financiers pour client) | tous 🔒 |
+| `DELETE` | `/api/clients/:id` | Supprimer un client | agency_admin, super_admin |
+| `POST` | `/api/clients/:id/reset-password` | Régénérer un mot de passe provisoire | agent, agency_admin, super_admin |
 
 ### Autres ressources CRUD
 
@@ -328,14 +346,18 @@ La collection intègre des **scripts de test automatiques** qui capturent les to
 **Ordre recommandé pour initialiser les données :**
 
 ```
-1. Auth › Register         →  créer un compte super_admin
-2. Auth › Login            →  {{token}} et {{refreshToken}} sont stockés
-3. Agencies › Create       →  {{agencyId}} est stocké
-4. Properties › Create     →  {{propertyId}} est stocké
-5. Tags › Create           →  {{tagId}} est stocké
-6. Contacts › Create       →  {{contactId}} est stocké
-7. Mandates › Create       →  {{mandateId}} est stocké
-8. Offers / Visits / Docs  →  utiliser les IDs précédents
+1. Auth › Register              →  créer un compte super_admin
+2. Auth › Login                 →  {{token}} et {{refreshToken}} sont stockés
+3. Agencies › Create            →  {{agencyId}} est stocké
+4. Properties › Create          →  {{propertyId}} est stocké
+5. Tags › Create                →  {{tagId}} est stocké
+6. Contacts › Create            →  {{contactId}} est stocké
+7. Clients › Create             →  {{clientId}} est stocké, {{temporaryPassword}} affiché
+8. Auth › Login (client)        →  connexion avec le mot de passe provisoire
+9. Auth › Change Password       →  définir le mot de passe définitif
+10. Clients › Portal            →  accéder au tableau de bord client
+11. Mandates › Create           →  {{mandateId}} est stocké
+12. Offers / Visits / Docs      →  utiliser les IDs précédents
 ```
 
 ---
@@ -345,10 +367,12 @@ La collection intègre des **scripts de test automatiques** qui capturent les to
 ```
 projet-file-rouge-api/
 │
-├── migrations/                  # Fichiers SQL numérotés (001 → 011)
+├── migrations/                  # Fichiers SQL numérotés (001 → 013)
 │   ├── 001_create_agencies.sql
 │   ├── 002_create_users.sql
-│   └── ...
+│   ├── ...
+│   ├── 012_fix_property_status.sql
+│   └── 013_create_client_profiles.sql
 │
 ├── postman/
 │   └── Ymmo.postman_collection.json
@@ -368,9 +392,15 @@ projet-file-rouge-api/
 │   │   └── errorHandler.js      # Gestionnaire d'erreurs global
 │   │
 │   ├── routes/                  # Endpoints + annotations @swagger
+│   │   ├── client.routes.js     # Gestion des clients (espace client)
+│   │   └── ...
 │   ├── controllers/             # Handlers HTTP (thin layer)
+│   │   ├── client.controller.js
+│   │   └── ...
 │   └── services/                # Logique métier + requêtes SQL
-│       └── socket.service.js    # Gestion des événements Socket.IO
+│       ├── client.service.js    # Création client, portail, reset password
+│       ├── socket.service.js    # Gestion des événements Socket.IO
+│       └── ...
 │
 ├── .env.example
 ├── CLAUDE.md
@@ -382,18 +412,18 @@ projet-file-rouge-api/
 
 ## 🗃️ Base de données
 
-Le schéma couvre **14 entités** interconnectées :
+Le schéma couvre **15 entités** interconnectées :
 
 ```
 agencies ──── users ──── properties ──── property_images
+    │           │  │           │
+    │           │  │           ├──── property_tags ──── tags
+    │           │  │           │
+    │      client_profiles     ├──── mandates ──── mandate_contacts
+    │           │              │
+    │         contacts         ├──── offers
     │              │           │
-    │              │           ├──── property_tags ──── tags
-    │              │           │
-    │         contacts         ├──── mandates ──── mandate_contacts
-    │              │           │
-    │              └───────────├──── offers
-    │                          │
-    │                          ├──── visits
+    │              └───────────├──── visits
     │                          │
     │                          └──── documents
     │
@@ -402,7 +432,56 @@ agencies ──── users ──── properties ──── property_images
               └── messages
 ```
 
+> `client_profiles` est lié `1:1` à `users` (via `user_id`) et `1:1` à `contacts` (via `contact_id`). Il stocke les informations financières du client et le lien vers le bien associé.
+
 Toutes les clés primaires sont des **UUID** générés nativement par PostgreSQL (`uuid_generate_v4()`).
+
+---
+
+## 🧑‍💼 Espace client
+
+### Cycle de vie d'un compte client
+
+```
+Agent crée le client
+  → POST /api/clients
+  → Réponse : temporaryPassword (visible une seule fois)
+  → L'agent transmet le mot de passe au client hors ligne
+
+Client se connecte
+  → POST /api/auth/login
+  → Réponse : mustChangePassword: true
+
+Client change son mot de passe
+  → POST /api/auth/change-password
+  → Flag réinitialisé, mot de passe provisoire effacé
+
+Client accède à son espace
+  → GET /api/clients/portal
+  → Voir : bien, offres, visites, documents
+
+Client met à jour ses infos bancaires
+  → PUT /api/clients/:id (champs financiers uniquement)
+```
+
+### Champs financiers (modifiables par le client)
+
+| Champ | Type | Description |
+|---|---|---|
+| `iban` | string | IBAN bancaire |
+| `bic` | string | Code BIC/SWIFT |
+| `bankName` | string | Nom de la banque |
+| `monthlyIncome` | number | Revenus mensuels nets |
+| `employmentType` | enum | `employee` · `self_employed` · `civil_servant` · `retired` · `student` · `unemployed` · `other` |
+
+### Réinitialisation du mot de passe provisoire
+
+Si le client perd son mot de passe avant la première connexion, l'agent peut régénérer un nouveau mot de passe provisoire :
+
+```
+POST /api/clients/:id/reset-password
+→ Retourne : { "temporaryPassword": "xK9mP2nQ4wRs" }
+```
 
 ---
 

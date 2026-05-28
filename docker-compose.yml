@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   db:
     image: postgres:14
@@ -10,6 +9,16 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+  db-metabase:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${MB_DB_USER}
+      POSTGRES_PASSWORD: ${MB_DB_PASS}
+      POSTGRES_DB: ${MB_DB_DBNAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-metabase-data:/var/lib/postgresql/data
   metabase:
     image: metabase/metabase:latest
     depends_on:
@@ -20,9 +29,10 @@ services:
       MB_DB_TYPE: ${MB_DB_TYPE}
       MB_DB_DBNAME: ${MB_DB_DBNAME}
       MB_DB_PORT: ${MB_DB_PORT}
-      MB_DB_USER: ${DB_USER}
-      MB_DB_PASS: ${DB_PASSWORD}
+      MB_DB_USER: ${MB_DB_USER}
+      MB_DB_PASS: ${MB_DB_PASS}
       MB_DB_HOST: ${MB_DB_HOST}
 
 volumes:
   db-data:
+  db-metabase-data:

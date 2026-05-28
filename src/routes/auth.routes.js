@@ -104,4 +104,27 @@ router.post('/logout', authenticate, ctrl.logout);
  */
 router.get('/me', authenticate, ctrl.me);
 
+/**
+ * @swagger
+ * /auth/change-password:
+ *   post:
+ *     summary: Changer son mot de passe (obligatoire après la première connexion client)
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [currentPassword, newPassword]
+ *             properties:
+ *               currentPassword: { type: string }
+ *               newPassword:     { type: string, minLength: 8 }
+ *     responses:
+ *       200: { description: Mot de passe mis à jour }
+ *       401: { description: Mot de passe actuel incorrect }
+ *       400: { description: Nouveau mot de passe trop court }
+ */
+router.post('/change-password', authenticate, ctrl.changePassword);
+
 module.exports = router;

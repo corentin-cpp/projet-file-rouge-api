@@ -36,14 +36,14 @@ async function login(email, password) {
   if (!valid) {
     const err = new Error('Identifiants invalides.'); err.status = 401; throw err;
   }
-  const payload = { id: user.id, role: user.role, agencyId: user.agency_id };
+  const payload = { id: user.id, role: user.role, agencyId: user.agency_id, mustChangePassword: user.must_change_password };
   const accessToken = signAccess(payload);
   const refreshToken = signRefresh({ id: user.id });
   await pool.query('UPDATE users SET refresh_token = $1 WHERE id = $2', [refreshToken, user.id]);
   return {
     accessToken,
     refreshToken,
-    user: { id: user.id, firstName: user.first_name, lastName: user.last_name, email: user.email, role: user.role },
+    user: { id: user.id, firstName: user.first_name, lastName: user.last_name, email: user.email, role: user.role, mustChangePassword: user.must_change_password },
   };
 }
 
@@ -78,4 +78,25 @@ async function me(userId) {
   return rows[0];
 }
 
-module.exports = { register, login, refresh, logout, me };
+async function changePassword(userId, currentPassword, newPassword) {
+  const { rows } = await pool.query(
+    'SELECT password_hash FROM users WHERE id = $1',
+    [userId]
+  );
+  if (!rows.length) { const err = new Error('Utilisateur introuvable.'); err.status = 404; throw err; }
+
+  const valid = await bcrypt.compare(currentPassword, rows[0].password_hash);
+  if (!valid) { const err = new Error('Mot de passe actuel incorrect.'); err.status = 401; throw err; }
+
+  if (!newPassword || newPassword.length < 8) {
+    const err = new Error('Le nouveau mot de passe doit faire au moins 8 caractères.'); err.status = 400; throw err;
+  }
+
+  const newHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+  await pool.query(
+    `UPDATE users SET password_hash = $1, must_change_password = FALSE, temp_password_hash = NULL, updated_at = NOW() WHERE id = $2`,
+    [newHash, userId]
+  );
+}
+
+module.exports = { register, login, refresh, logout, me, changePassword };

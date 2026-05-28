@@ -306,37 +306,56 @@ INSERT INTO property_tags (property_id, tag_id) VALUES
 -- =============================================================================
 
 INSERT INTO property_images (id, property_id, url, alt_text, is_cover, display_order) VALUES
-  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/paris/marais-salon.jpg',      'Salon avec parquet',   TRUE,  1),
-  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/paris/marais-chambre.jpg',    'Chambre principale',   FALSE, 2),
-  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/paris/marais-facade.jpg',     'Façade haussmannienne',FALSE, 3),
-  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000002', 'https://cdn.ymmo.fr/paris/bastille-studio.jpg',   'Vue générale studio',  TRUE,  1),
-  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000003', 'https://cdn.ymmo.fr/paris/montparnasse-sejour.jpg','Séjour lumineux',      TRUE,  1),
-  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000004', 'https://cdn.ymmo.fr/paris/loft-verriere.jpg',     'Verrière principale',  TRUE,  1),
-  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000005', 'https://cdn.ymmo.fr/paris/vincennes-facade.jpg',  'Façade maison',        TRUE,  1),
-  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000005', 'https://cdn.ymmo.fr/paris/vincennes-jardin.jpg',  'Jardin arrière',       FALSE, 2),
+  -- Paris — Marais
+  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1718030463382-896949a8d53a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon avec parquet et fenêtres',       TRUE,  1),
+  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1760067538612-c0ecd3bc3d3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon moderne avec canapé et plantes', FALSE, 2),
+  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1760067537620-6aaab015fba5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Séjour avec canapé et télévision',     FALSE, 3),
+  -- Paris — Bastille
+  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1760067537639-0fb475c87657?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon spacieux avec grandes fenêtres', TRUE,  1),
+  -- Paris — Montparnasse
+  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1761158497156-c8f202a07b42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Maison moderne avec grande véranda',   TRUE,  1),
+  -- Paris — Loft
+  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1768488314310-3742b3c75579?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon cosy avec cheminée',             TRUE,  1),
+  -- Paris — Vincennes
+  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1772411650649-f88111bcb8a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon avec vue sur le lac',            TRUE,  1),
+  (uuid_generate_v4(), 'e1000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1777305153838-4207eec294f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Cour moderne avec piscine',            FALSE, 2),
 
-  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/lyon/saone-sejour.jpg',       'Séjour vue Saône',     TRUE,  1),
-  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/lyon/saone-balcon.jpg',       'Balcon vue fleuve',    FALSE, 2),
-  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000002', 'https://cdn.ymmo.fr/lyon/vieux-escalier.jpg',     'Escalier à vis',       TRUE,  1),
-  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000003', 'https://cdn.ymmo.fr/lyon/caluire-piscine.jpg',    'Piscine extérieure',   TRUE,  1),
-  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000003', 'https://cdn.ymmo.fr/lyon/caluire-jardin.jpg',     'Jardin paysager',      FALSE, 2),
-  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000004', 'https://cdn.ymmo.fr/lyon/partdieu-studio.jpg',    'Studio meublé',        TRUE,  1),
-  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000005', 'https://cdn.ymmo.fr/lyon/confluence-local.jpg',   'Vitrine rue',          TRUE,  1),
+  -- Lyon — Saône
+  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1774199616762-31d947dc7d35?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon moderne avec jardin',            TRUE,  1),
+  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1718030463382-896949a8d53a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon avec parquet et fenêtres',       FALSE, 2),
+  -- Lyon — Vieux-Lyon
+  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1760067538612-c0ecd3bc3d3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon moderne avec canapé et plantes', TRUE,  1),
+  -- Lyon — Caluire
+  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1777305153838-4207eec294f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Cour moderne avec piscine',            TRUE,  1),
+  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1760067537620-6aaab015fba5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Séjour avec canapé et télévision',     FALSE, 2),
+  -- Lyon — Part-Dieu
+  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1760067537639-0fb475c87657?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon spacieux avec grandes fenêtres', TRUE,  1),
+  -- Lyon — Confluence
+  (uuid_generate_v4(), 'e2000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1761158497156-c8f202a07b42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Maison moderne avec grande véranda',   TRUE,  1),
 
-  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/bordeaux/chartrons-garonne.jpg','Vue sur Garonne',     TRUE,  1),
-  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/bordeaux/chartrons-salon.jpg', 'Salon parquet',       FALSE, 2),
-  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000002', 'https://cdn.ymmo.fr/bordeaux/cauderan-facade.jpg', 'Façade girondine',    TRUE,  1),
-  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000002', 'https://cdn.ymmo.fr/bordeaux/cauderan-jardin.jpg', 'Jardin arboré',       FALSE, 2),
-  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000003', 'https://cdn.ymmo.fr/bordeaux/euratlantique-appt.jpg','Salon neuf',         TRUE,  1),
-  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000004', 'https://cdn.ymmo.fr/bordeaux/loft-verriere.jpg',  'Verrière atelier',    TRUE,  1),
+  -- Bordeaux — Chartrons
+  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1768488314310-3742b3c75579?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon cosy avec cheminée',             TRUE,  1),
+  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1772411650649-f88111bcb8a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon avec vue sur le lac',            FALSE, 2),
+  -- Bordeaux — Cauderan
+  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1761158497156-c8f202a07b42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Façade maison moderne',                TRUE,  1),
+  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1777305153838-4207eec294f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Jardin avec piscine',                  FALSE, 2),
+  -- Bordeaux — Euratlantique
+  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1774199616762-31d947dc7d35?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon moderne avec vue jardin',        TRUE,  1),
+  -- Bordeaux — Loft
+  (uuid_generate_v4(), 'e3000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1718030463382-896949a8d53a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Espace principal lumineux',            TRUE,  1),
 
-  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/aix/bastide-facade.jpg',      'Bastide restaurée',    TRUE,  1),
-  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/aix/bastide-piscine.jpg',     'Piscine à débordement',FALSE, 2),
-  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000001', 'https://cdn.ymmo.fr/aix/bastide-parc.jpg',        'Parc arboré',          FALSE, 3),
-  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000002', 'https://cdn.ymmo.fr/aix/mirabeau-salon.jpg',      'Salon vue platanes',   TRUE,  1),
-  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000003', 'https://cdn.ymmo.fr/aix/milles-villa.jpg',        'Villa extérieur',      TRUE,  1),
-  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000004', 'https://cdn.ymmo.fr/aix/campus-studio.jpg',       'Studio meublé',        TRUE,  1),
-  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000005', 'https://cdn.ymmo.fr/aix/mazarin-terrasse.jpg',    'Terrasse vue toits',   TRUE,  1);
+  -- Aix — Bastide
+  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1777305153838-4207eec294f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Piscine à débordement',                TRUE,  1),
+  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1761158497156-c8f202a07b42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Façade bastide restaurée',             FALSE, 2),
+  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1772411650649-f88111bcb8a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Parc arboré vue lac',                  FALSE, 3),
+  -- Aix — Mirabeau
+  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1760067538612-c0ecd3bc3d3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Salon vue platanes',                   TRUE,  1),
+  -- Aix — Milles
+  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1760067537620-6aaab015fba5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Villa extérieur séjour',               TRUE,  1),
+  -- Aix — Campus
+  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1760067537639-0fb475c87657?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Studio meublé lumineux',               TRUE,  1),
+  -- Aix — Mazarin
+  (uuid_generate_v4(), 'e4000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1768488314310-3742b3c75579?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', 'Terrasse vue toits',                   TRUE,  1);
 
 -- =============================================================================
 -- CONTACTS (CLIENTS)
