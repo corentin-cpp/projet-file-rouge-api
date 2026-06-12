@@ -510,56 +510,57 @@ INSERT INTO offers (id, property_id, contact_id, agent_id, amount, conditions, v
 -- =============================================================================
 
 INSERT INTO visits (id, property_id, contact_id, agent_id, scheduled_at, duration_minutes, status, notes, feedback) VALUES
-  -- Paris
-  ('5a100000-0000-0000-0000-000000000001', 'e1000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000002',
-   '2026-04-10 10:00:00', 60, 'completed', 'Première visite. Client accompagné de son épouse.',
+  -- Paris — toutes les visites assignées à Emma Petit (b1000000-...-0004)
+  ('5a100000-0000-0000-0000-000000000001', 'e1000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000004',
+   '2026-05-16 10:00:00', 60, 'completed', 'Première visite. Client accompagné de son épouse.',
    'Très intéressé. Demande contre-visite avec architecte pour évaluer travaux cuisine.'),
 
-  ('5a100000-0000-0000-0000-000000000002', 'e1000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000002',
-   '2026-04-22 14:30:00', 90, 'completed', 'Contre-visite avec architecte Mme Beaumont.',
+  ('5a100000-0000-0000-0000-000000000002', 'e1000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000004',
+   '2026-05-23 14:30:00', 90, 'completed', 'Contre-visite avec architecte Mme Beaumont.',
    'Architecte confirme travaux légers. Client prêt à formuler une offre.'),
 
-  ('5a100000-0000-0000-0000-000000000003', 'e1000000-0000-0000-0000-000000000003', 'c1000000-0000-0000-0000-000000000004', 'b1000000-0000-0000-0000-000000000003',
-   '2026-05-08 11:00:00', 30, 'confirmed', 'Première visite locative.', NULL),
+  ('5a100000-0000-0000-0000-000000000003', 'e1000000-0000-0000-0000-000000000003', 'c1000000-0000-0000-0000-000000000004', 'b1000000-0000-0000-0000-000000000004',
+   '2026-05-29 11:00:00', 30, 'completed', 'Première visite locative.',
+   'Cliente satisfaite du quartier. Souhaite réfléchir avant de confirmer.'),
 
-  ('5a100000-0000-0000-0000-000000000004', 'e1000000-0000-0000-0000-000000000004', 'c1000000-0000-0000-0000-000000000003', 'b1000000-0000-0000-0000-000000000003',
-   '2026-05-12 16:00:00', 45, 'scheduled', 'Visite loft investisseur.', NULL),
+  ('5a100000-0000-0000-0000-000000000004', 'e1000000-0000-0000-0000-000000000004', 'c1000000-0000-0000-0000-000000000003', 'b1000000-0000-0000-0000-000000000004',
+   '2026-06-09 16:00:00', 45, 'scheduled', 'Visite loft investisseur.', NULL),
 
   -- Lyon
   ('5a200000-0000-0000-0000-000000000001', 'e2000000-0000-0000-0000-000000000001', 'c2000000-0000-0000-0000-000000000001', 'b2000000-0000-0000-0000-000000000002',
-   '2026-03-25 10:00:00', 60, 'completed', 'Visite T4 vue Saône.',
+   '2026-05-19 10:00:00', 60, 'completed', 'Visite T4 vue Saône.',
    'Client conquis par la vue. Souhaite prendre le temps de réfléchir. Très sérieux.'),
 
   ('5a200000-0000-0000-0000-000000000002', 'e2000000-0000-0000-0000-000000000003', 'c2000000-0000-0000-0000-000000000002', 'b2000000-0000-0000-0000-000000000003',
-   '2026-04-05 14:00:00', 75, 'completed', 'Visite villa avec enfants.',
+   '2026-05-27 14:00:00', 75, 'completed', 'Visite villa avec enfants.',
    'Famille enthousiaste. Piscine et jardin ont fait la différence. En attente accord financement.'),
 
   ('5a200000-0000-0000-0000-000000000003', 'e2000000-0000-0000-0000-000000000005', 'c2000000-0000-0000-0000-000000000004', 'b2000000-0000-0000-0000-000000000003',
-   '2026-05-15 09:30:00', 30, 'scheduled', 'Visite local commercial Confluence.', NULL),
+   '2026-06-10 09:30:00', 30, 'scheduled', 'Visite local commercial Confluence.', NULL),
 
   -- Bordeaux
   ('5a300000-0000-0000-0000-000000000001', 'e3000000-0000-0000-0000-000000000001', 'c3000000-0000-0000-0000-000000000001', 'b3000000-0000-0000-0000-000000000002',
-   '2026-04-03 10:30:00', 60, 'completed', 'Visite appartement Chartrons.',
+   '2026-05-20 10:30:00', 60, 'completed', 'Visite appartement Chartrons.',
    'Client venu de Paris, très motivé. La vue Garonne a été décisive.'),
 
   ('5a300000-0000-0000-0000-000000000002', 'e3000000-0000-0000-0000-000000000002', 'c3000000-0000-0000-0000-000000000002', 'b3000000-0000-0000-0000-000000000003',
-   '2026-04-15 11:00:00', 60, 'completed', 'Visite maison Caudéran avec vendeur.',
+   '2026-05-28 11:00:00', 60, 'completed', 'Visite maison Caudéran avec vendeur.',
    'Vendeur pressé. Contact difficile mais bien en bon état. Négociation possible.'),
 
   ('5a300000-0000-0000-0000-000000000003', 'e3000000-0000-0000-0000-000000000004', 'c3000000-0000-0000-0000-000000000003', 'b3000000-0000-0000-0000-000000000002',
-   '2026-05-06 17:00:00', 30, 'no_show', 'Visite loft Saint-Michel. Client n''est pas venu.', NULL),
+   '2026-06-03 17:00:00', 30, 'no_show', 'Visite loft Saint-Michel. Client n''est pas venu.', NULL),
 
   -- Aix
   ('5a400000-0000-0000-0000-000000000001', 'e4000000-0000-0000-0000-000000000001', 'c4000000-0000-0000-0000-000000000001', 'b4000000-0000-0000-0000-000000000002',
-   '2026-03-20 11:00:00', 90, 'completed', 'Visite bastide avec M. Faure et conseiller financier.',
+   '2026-05-17 11:00:00', 90, 'completed', 'Visite bastide avec M. Faure et conseiller financier.',
    'Coup de cœur immédiat. Le parc et la piscine ont convaincu. Offre à venir.'),
 
   ('5a400000-0000-0000-0000-000000000002', 'e4000000-0000-0000-0000-000000000003', 'c4000000-0000-0000-0000-000000000002', 'b4000000-0000-0000-0000-000000000003',
-   '2026-04-18 14:00:00', 60, 'completed', 'Visite villa Les Milles.',
+   '2026-06-02 14:00:00', 60, 'completed', 'Visite villa Les Milles.',
    'Client très intéressé. Demande délai pour vente de son bien actuel.'),
 
   ('5a400000-0000-0000-0000-000000000003', 'e4000000-0000-0000-0000-000000000004', 'c4000000-0000-0000-0000-000000000003', 'b4000000-0000-0000-0000-000000000004',
-   '2026-05-10 10:00:00', 20, 'scheduled', 'Visite studio étudiant.', NULL);
+   '2026-06-11 10:00:00', 20, 'scheduled', 'Visite studio étudiant.', NULL);
 
 -- =============================================================================
 -- DOCUMENTS
